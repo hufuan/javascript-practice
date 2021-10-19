@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './index.css'
+
 import { nanoid } from 'nanoid';
 
 export default class Header extends Component {
+    static propTypes = {
+        addTodo: PropTypes.func.isRequired
+        }
     handleKeyUp = (event) =>{
         const {keyCode, target} = event;
         if (keyCode !== 13)
@@ -14,7 +19,7 @@ export default class Header extends Component {
 
         console.log(target.value, keyCode);
         const todoObj = {id: nanoid(), name:target.value, done: false};
-        this.props.a(todoObj);
+        this.props.addTodo(todoObj);
         target.value = '';
     }
     render() {

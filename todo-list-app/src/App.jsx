@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import List from './components/List'
@@ -14,6 +15,24 @@ export default class App extends Component {
     const newTodos = [todoObj, ...todos];
     this.setState({todos:newTodos})
   }
+
+  updateTodo = (id, done)=>{
+    const {todos} = this.state;
+    const newTodos = todos.map((todoObj)=>{
+      if (todoObj.id === id) return {...todoObj, done}
+      else 
+        return todoObj;
+
+    });
+    this.setState({todos:newTodos})
+  }
+  deleteTodo = (id)=> {
+    const {todos} = this.state;
+    const newTodos = todos.filter((todoObj)=>{
+        return todoObj.id !== id
+    });
+    this.setState({todos:newTodos});
+  }
   render() {
     const {todos} = this.state;
     return (
@@ -21,8 +40,8 @@ export default class App extends Component {
         
         <div className="todo-container">
           <div className="todo-wrap">
-            <Header a={this.addTodo}/>
-            <List todos={todos}/>
+            <Header addTodo={this.addTodo}/>
+            <List todos={todos} updateTodo={this.updateTodo} deleteTodo={this.deleteTodo}/>
             <Footer/>
           </div>
         </div>

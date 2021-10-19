@@ -4,24 +4,31 @@ export default class Item extends Component {
     state = {mouse: false};
     handleMouse =(flag) =>{
         return ()=>{
+            //console.log(flag);
             this.setState({mouse:flag})
         }
     }
     handleCheck = (id)=>{
         return (event)=> {
             console.log(id, event.target.checked);
+            this.props.updateTodo(id, event.target.checked);
+        }
+    }
+    handleDelete = (id) =>{
+        if (window.confirm('Are you sure?')){
+            this.props.deleteTodo(id);
         }
     }
     render() {
-        const {name, done} = this.props;
-        //const {mouse} = this.state;
+        const {id, name, done} = this.props;
+        const {mouse} = this.state;
         return (
-            <li style={{backgroupdColor:this.state.mouse ? '#ddd' : 'while'}} onMouseLeave={this.handleMouse(false)} onMouseEnter={this.handleMouse(true)} >
+            <li style={{backgroundColor: mouse ? '#ddd' : '#fff'}} onMouseLeave={this.handleMouse(false)} onMouseEnter={this.handleMouse(true)} >
                 <label>
-                    <input type="checkbox" defaultChecked={done} />
+                    <input type="checkbox" defaultChecked={done} onChange={this.handleCheck(id)}/>
                     <span>{name}</span>
                 </label>
-                <button className="btn butn-danger" style={{display: 'none'}}>Delete</button>
+                <button onClick={()=>this.handleDelete(id)} className="btn butn-danger" style={{display: mouse ? 'block' : 'none'}}>Delete</button>
             </li>
         )
     }
