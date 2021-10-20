@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import List from './components/List'
 export default class App extends Component {
   state = {todos:[
     {id: '001', name: 'eating', done: true},
-    {id: '002', name: 'sleep', done: false},
+    {id: '002', name: 'sleeping', done: false},
     {id: '003', name: 'coding', done: true},
-    {id: '004', name: 'shoping', done: true}
+    {id: '004', name: 'shopping', done: false}
   ]}
   addTodo = (todoObj) => {
     const {todos} = this.state;
