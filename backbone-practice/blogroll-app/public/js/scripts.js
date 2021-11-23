@@ -7,7 +7,9 @@ var Blog = Backbone.Model.extend({
     }
 });
 
-var Blogs = Backbone.Collection.extend({});
+var Blogs = Backbone.Collection.extend({
+    url: 'http://localhost:3000/api/blogs'
+});
 
 var blog1 = new Blog({author: 'Michael', title: 'Michael\'s blog', url: 'http://michaelsblog.com'});
 var blog2 = new Blog({author: 'John', title: 'John\'s blog', url: 'http://johnsblog.com'});
@@ -23,9 +25,10 @@ var BlogView = Backbone.View.extend({
     events: {
         'click .edit-blog': 'edit',
         'click .update-blog': 'update',
-        'click . cancel-blog': 'cancel',
+        'click .cancel-blog': 'cancel',
         'click .delete-blog': 'delete'
     },
+    
     edit: function() {
        this. $('.edit-blog').hide();
        this. $('.delete-blog').hide();
@@ -49,8 +52,8 @@ var BlogView = Backbone.View.extend({
     }
     ,
     delete: function(){
-        
-    }
+        this.model.destroy();
+    },
 
     render: function() {
         this.$el.html(this.template( this.model.toJSON() ) )
@@ -70,7 +73,18 @@ var BlogsView = Backbone.View.extend({
             setTimeout(function(){
                 self.render()
             }, 30)
-        }, this)
+        }, this);
+        this.model.on('remove', this.render, this);
+        this.model.fetch( {
+            success: function (response) {
+                _.each(response.toJSON(), function (item){
+                    console.log('Successfully Got blog with _id: '+ item._id);
+                });
+            },
+            error: function (){
+                console.log('Failed to get blogs')
+            }
+        });
     },
     render: function() {
         var self = this;
@@ -95,5 +109,13 @@ $(document).ready(function(){
         $('.url-input').val('');
         console.log(blog.toJSON());
         blogs.add(blog);
+        blog.save(null, {
+            success: function (response) {
+                console.log('Successfully SAVED blog with _id: ' + response.toJSON()._id);
+            },
+            error: function (){
+                console.log('Failed to save blog')
+            }
+        })
     })
 })
