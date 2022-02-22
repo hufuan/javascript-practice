@@ -9,7 +9,7 @@ export default class App extends Component {
     {id: '003', name: 'coding', done: true},
     {id: '004', name: 'shopping', done: false}
   ]}
-  addTodo = (todoObj) => {
+  addTodo =  (todoObj)=>{
     const {todos} = this.state;
     const newTodos = [todoObj, ...todos];
     this.setState({todos:newTodos})
